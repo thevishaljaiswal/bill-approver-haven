@@ -17,6 +17,7 @@ import PurchaseBillForm from "@/pages/billForms/PurchaseBillForm";
 import AdvanceRequestForm from "@/pages/billForms/AdvanceRequestForm";
 import NotFound from "./pages/NotFound";
 import PurchaseBills from "@/pages/PurchaseBills";
+import AdvanceBills from "@/pages/AdvanceBills";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +117,14 @@ const App = () => (
               } 
             />
             <Route path="*" element={<NotFound />} />
+            <Route 
+              path="/bills/advance" 
+              element={
+                <AppLayout>
+                  <AdvanceBills />
+                </AppLayout>
+              } 
+            />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
