@@ -16,6 +16,7 @@ import ConstructionContractForm from "@/pages/billForms/ConstructionContractForm
 import PurchaseBillForm from "@/pages/billForms/PurchaseBillForm";
 import AdvanceRequestForm from "@/pages/billForms/AdvanceRequestForm";
 import NotFound from "./pages/NotFound";
+import PurchaseBills from "@/pages/PurchaseBills";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,14 @@ const App = () => (
               element={
                 <AppLayout>
                   <PurchaseBillForm />
+                </AppLayout>
+              } 
+            />
+            <Route 
+              path="/bills/purchase" 
+              element={
+                <AppLayout>
+                  <PurchaseBills />
                 </AppLayout>
               } 
             />
