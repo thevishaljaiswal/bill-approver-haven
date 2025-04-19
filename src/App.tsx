@@ -11,6 +11,7 @@ import Footer from "@/components/layout/Footer";
 import Dashboard from "@/pages/Dashboard";
 import Bills from "@/pages/Bills";
 import DepartmentBills from "@/pages/DepartmentBills";
+import ConstructionBills from "@/pages/ConstructionBills";
 import DepartmentOverheadForm from "@/pages/billForms/DepartmentOverheadForm";
 import NotFound from "./pages/NotFound";
 
@@ -60,6 +61,14 @@ const App = () => (
               element={
                 <AppLayout>
                   <DepartmentBills />
+                </AppLayout>
+              } 
+            />
+            <Route 
+              path="/bills/construction" 
+              element={
+                <AppLayout>
+                  <ConstructionBills />
                 </AppLayout>
               } 
             />
