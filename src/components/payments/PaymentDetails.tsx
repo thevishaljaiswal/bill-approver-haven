@@ -1,6 +1,13 @@
 
 import React from 'react';
-import { Bill } from '@/context/BillContext';
+import { 
+  Bill, 
+  BillType, 
+  DepartmentOverheadBill, 
+  ConstructionContractBill, 
+  PurchaseBill, 
+  AdvanceRequestBill 
+} from '@/context/BillContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DollarSign } from 'lucide-react';
@@ -12,14 +19,14 @@ interface PaymentDetailsProps {
 const PaymentDetails: React.FC<PaymentDetailsProps> = ({ bill }) => {
   const getPaymentAmount = () => {
     switch (bill.type) {
-      case 'Department Overhead Bills':
-        return bill.amount;
-      case 'Construction Contract Bills':
-        return bill.invoiceAmount;
-      case 'Purchase Bills':
-        return bill.totalAmount;
-      case 'Advance Request Bills':
-        return bill.amountRequested;
+      case BillType.DEPARTMENT_OVERHEAD:
+        return (bill as DepartmentOverheadBill).amount;
+      case BillType.CONSTRUCTION_CONTRACT:
+        return (bill as ConstructionContractBill).invoiceAmount;
+      case BillType.PURCHASE:
+        return (bill as PurchaseBill).totalAmount;
+      case BillType.ADVANCE_REQUEST:
+        return (bill as AdvanceRequestBill).amountRequested;
       default:
         return 0;
     }
@@ -57,10 +64,10 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = ({ bill }) => {
                 }
               </TableCell>
             </TableRow>
-            {bill.type === 'Construction Contract Bills' && (
+            {bill.type === BillType.CONSTRUCTION_CONTRACT && (
               <TableRow>
                 <TableCell className="font-medium">Retention Amount</TableCell>
-                <TableCell>${bill.retentionAmount.toLocaleString()}</TableCell>
+                <TableCell>${(bill as ConstructionContractBill).retentionAmount.toLocaleString()}</TableCell>
               </TableRow>
             )}
           </TableBody>

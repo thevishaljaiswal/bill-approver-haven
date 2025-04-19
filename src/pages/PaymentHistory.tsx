@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useBillContext, BillType, BillStatus } from '@/context/BillContext';
+import { useBillContext, BillType, BillStatus, Bill, DepartmentOverheadBill, ConstructionContractBill, PurchaseBill, AdvanceRequestBill } from '@/context/BillContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DollarSign, Filter } from 'lucide-react';
@@ -20,17 +20,46 @@ const PaymentHistory = () => {
   const totalAmount = filteredBills.reduce((sum, bill) => {
     switch (bill.type) {
       case BillType.DEPARTMENT_OVERHEAD:
-        return sum + bill.amount;
+        return sum + (bill as DepartmentOverheadBill).amount;
       case BillType.CONSTRUCTION_CONTRACT:
-        return sum + bill.invoiceAmount;
+        return sum + (bill as ConstructionContractBill).invoiceAmount;
       case BillType.PURCHASE:
-        return sum + bill.totalAmount;
+        return sum + (bill as PurchaseBill).totalAmount;
       case BillType.ADVANCE_REQUEST:
-        return sum + bill.amountRequested;
+        return sum + (bill as AdvanceRequestBill).amountRequested;
       default:
         return sum;
     }
   }, 0);
+
+  // Helper functions for type-safe property access
+  const getBillReference = (bill: Bill): string => {
+    switch (bill.type) {
+      case BillType.PURCHASE:
+        return (bill as PurchaseBill).poNumber;
+      case BillType.CONSTRUCTION_CONTRACT:
+        return (bill as ConstructionContractBill).billNumber;
+      case BillType.DEPARTMENT_OVERHEAD:
+        return (bill as DepartmentOverheadBill).billNumber;
+      default:
+        return bill.id.substring(0, 8);
+    }
+  };
+
+  const getBillAmount = (bill: Bill): number => {
+    switch (bill.type) {
+      case BillType.PURCHASE:
+        return (bill as PurchaseBill).totalAmount;
+      case BillType.CONSTRUCTION_CONTRACT:
+        return (bill as ConstructionContractBill).invoiceAmount;
+      case BillType.DEPARTMENT_OVERHEAD:
+        return (bill as DepartmentOverheadBill).amount;
+      case BillType.ADVANCE_REQUEST:
+        return (bill as AdvanceRequestBill).amountRequested;
+      default:
+        return 0;
+    }
+  };
 
   return (
     <div className="container py-8 animate-fade-in">
@@ -106,22 +135,9 @@ const PaymentHistory = () => {
                 <TableCell>
                   {bill.createdAt.toLocaleDateString()}
                 </TableCell>
+                <TableCell>{getBillReference(bill)}</TableCell>
                 <TableCell>
-                  {bill.type === BillType.PURCHASE ? 
-                    bill.poNumber :
-                    bill.type === BillType.CONSTRUCTION_CONTRACT ?
-                    bill.billNumber :
-                    bill.type === BillType.DEPARTMENT_OVERHEAD ?
-                    bill.billNumber :
-                    bill.id.substring(0, 8)
-                  }
-                </TableCell>
-                <TableCell>
-                  ${(bill.type === BillType.PURCHASE ? bill.totalAmount :
-                     bill.type === BillType.CONSTRUCTION_CONTRACT ? bill.invoiceAmount :
-                     bill.type === BillType.DEPARTMENT_OVERHEAD ? bill.amount :
-                     bill.type === BillType.ADVANCE_REQUEST ? bill.amountRequested : 0
-                    ).toLocaleString()}
+                  ${getBillAmount(bill).toLocaleString()}
                 </TableCell>
                 <TableCell>
                   <StatusBadge status={bill.status} />
