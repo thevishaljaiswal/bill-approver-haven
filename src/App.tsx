@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +12,9 @@ import Bills from "@/pages/Bills";
 import DepartmentBills from "@/pages/DepartmentBills";
 import ConstructionBills from "@/pages/ConstructionBills";
 import DepartmentOverheadForm from "@/pages/billForms/DepartmentOverheadForm";
+import ConstructionContractForm from "@/pages/billForms/ConstructionContractForm";
+import PurchaseBillForm from "@/pages/billForms/PurchaseBillForm";
+import AdvanceRequestForm from "@/pages/billForms/AdvanceRequestForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -77,6 +79,30 @@ const App = () => (
               element={
                 <AppLayout>
                   <DepartmentOverheadForm />
+                </AppLayout>
+              } 
+            />
+            <Route 
+              path="/bills/construction/new" 
+              element={
+                <AppLayout>
+                  <ConstructionContractForm />
+                </AppLayout>
+              } 
+            />
+            <Route 
+              path="/bills/purchase/new" 
+              element={
+                <AppLayout>
+                  <PurchaseBillForm />
+                </AppLayout>
+              } 
+            />
+            <Route 
+              path="/bills/advance/new" 
+              element={
+                <AppLayout>
+                  <AdvanceRequestForm />
                 </AppLayout>
               } 
             />
