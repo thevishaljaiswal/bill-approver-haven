@@ -1,10 +1,9 @@
 
 import React, { useState } from 'react';
-import { useBillContext, BillType, BillStatus } from '@/context/BillContext';
+import { useBillContext, BillType, BillStatus, DepartmentOverheadBill, Bill } from '@/context/BillContext';
 import StatusBadge from '@/components/ui/StatusBadge';
 import ApprovalStages from '@/components/ui/ApprovalStages';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Table,
   TableBody,
@@ -33,18 +32,18 @@ const DepartmentBills = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<BillStatus | 'all'>('all');
 
-  // Filter for department overhead bills only
-  const departmentBills = bills.filter(bill => 
+  // Filter for department overhead bills only and type guard them
+  const departmentBills = bills.filter((bill): bill is DepartmentOverheadBill => 
     bill.type === BillType.DEPARTMENT_OVERHEAD &&
-    (selectedDepartment === 'all' || bill.department === selectedDepartment) &&
+    (selectedDepartment === 'all' || 'department' in bill && bill.department === selectedDepartment) &&
     (selectedStatus === 'all' || bill.status === selectedStatus)
   );
 
   // Calculate department statistics
   const getDepartmentStats = (department: string) => {
-    const deptBills = bills.filter(bill => 
+    const deptBills = bills.filter((bill): bill is DepartmentOverheadBill => 
       bill.type === BillType.DEPARTMENT_OVERHEAD &&
-      (department === 'all' || bill.department === department)
+      (department === 'all' || 'department' in bill && bill.department === department)
     );
     
     return {
