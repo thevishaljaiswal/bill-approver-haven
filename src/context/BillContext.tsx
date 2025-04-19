@@ -1,5 +1,5 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 // Define the approval stages
 export const approvalStages = [
@@ -116,6 +116,164 @@ export type Bill =
   | PurchaseBill 
   | AdvanceRequestBill;
 
+// Create initial dummy data
+const initialBills: Bill[] = [
+  // Department Overhead Bill
+  {
+    id: uuidv4(),
+    type: BillType.DEPARTMENT_OVERHEAD,
+    billNumber: "DOB-2025-001",
+    billDate: new Date("2025-04-15"),
+    vendorName: "Office Supplies Co.",
+    department: "Information Technology",
+    description: "Monthly office supplies and equipment maintenance",
+    amount: 5430.50,
+    dueDate: new Date("2025-05-15"),
+    currentStage: 2,
+    status: BillStatus.PENDING,
+    createdAt: new Date("2025-04-15"),
+    updatedAt: new Date("2025-04-15"),
+    attachments: [
+      {
+        name: "Invoice-DOB-001.pdf",
+        url: "#",
+        type: "application/pdf"
+      }
+    ],
+    approvals: [
+      {
+        stage: 0,
+        approverName: "John Smith",
+        status: BillStatus.APPROVED,
+        date: new Date("2025-04-16"),
+        comments: "All documents verified"
+      },
+      {
+        stage: 1,
+        approverName: "Sarah Johnson",
+        status: BillStatus.APPROVED,
+        date: new Date("2025-04-17"),
+        comments: "Approved after verification"
+      }
+    ],
+    remarks: "Standard monthly overhead expenses"
+  },
+  // Construction Contract Bill
+  {
+    id: uuidv4(),
+    type: BillType.CONSTRUCTION_CONTRACT,
+    projectId: "PRJ-2025-001",
+    projectName: "New Office Building",
+    contractorName: "BuildWell Construction",
+    workOrderNumber: "WO-2025-001",
+    siteLocation: "123 Business Park",
+    billNumber: "CCB-2025-001",
+    billDate: new Date("2025-04-10"),
+    invoiceAmount: 125000.00,
+    taxAmount: 12500.00,
+    paymentTerms: "Net 30",
+    measurementBookNumber: "MB-001",
+    certifiedAmount: 120000.00,
+    retentionAmount: 5000.00,
+    currentStage: 3,
+    status: BillStatus.PENDING,
+    createdAt: new Date("2025-04-10"),
+    updatedAt: new Date("2025-04-10"),
+    attachments: [
+      {
+        name: "Invoice-CCB-001.pdf",
+        url: "#",
+        type: "application/pdf"
+      }
+    ],
+    approvals: [
+      {
+        stage: 0,
+        approverName: "Mike Wilson",
+        status: BillStatus.APPROVED,
+        date: new Date("2025-04-11"),
+        comments: "Work completed as per specifications"
+      }
+    ],
+    remarks: "Phase 1 completion billing"
+  },
+  // Purchase Bill
+  {
+    id: uuidv4(),
+    type: BillType.PURCHASE,
+    poNumber: "PO-2025-001",
+    poDate: new Date("2025-04-05"),
+    vendorName: "Tech Solutions Inc",
+    itemDescription: "Desktop Computers - 10 units",
+    quantity: 10,
+    unitPrice: 1200.00,
+    invoiceNumber: "INV-2025-001",
+    invoiceDate: new Date("2025-04-08"),
+    totalAmount: 12000.00,
+    taxDetails: "GST 10%",
+    paymentTerms: "Net 15",
+    grnNumber: "GRN-2025-001",
+    grnDate: new Date("2025-04-09"),
+    quantityReceived: 10,
+    currentStage: 4,
+    status: BillStatus.APPROVED,
+    createdAt: new Date("2025-04-05"),
+    updatedAt: new Date("2025-04-15"),
+    attachments: [
+      {
+        name: "Invoice-PB-001.pdf",
+        url: "#",
+        type: "application/pdf"
+      }
+    ],
+    approvals: [
+      {
+        stage: 0,
+        approverName: "Emily Brown",
+        status: BillStatus.APPROVED,
+        date: new Date("2025-04-12"),
+        comments: "All items received in good condition"
+      }
+    ],
+    remarks: "Annual IT equipment upgrade"
+  },
+  // Advance Request Bill
+  {
+    id: uuidv4(),
+    type: BillType.ADVANCE_REQUEST,
+    vendorName: "Marketing Experts LLC",
+    vendorId: "VEN-2025-001",
+    contactNumber: "+1-555-0123",
+    bankDetails: "Bank of America - 1234567890",
+    requestDate: new Date("2025-04-01"),
+    purpose: "Trade Show Expenses",
+    amountRequested: 15000.00,
+    paymentMethod: "Bank Transfer",
+    justification: "Advance required for booth setup and materials",
+    currentStage: 1,
+    status: BillStatus.REJECTED,
+    createdAt: new Date("2025-04-01"),
+    updatedAt: new Date("2025-04-02"),
+    attachments: [
+      {
+        name: "Request-AR-001.pdf",
+        url: "#",
+        type: "application/pdf"
+      }
+    ],
+    approvals: [
+      {
+        stage: 0,
+        approverName: "David Lee",
+        status: BillStatus.REJECTED,
+        date: new Date("2025-04-02"),
+        comments: "Insufficient justification for advance amount"
+      }
+    ],
+    remarks: "Trade show participation advance request"
+  }
+];
+
 // Context interface
 interface BillContextProps {
   bills: Bill[];
@@ -135,7 +293,7 @@ interface BillContextProps {
 
 // Create context with default values
 const BillContext = createContext<BillContextProps>({
-  bills: [],
+  bills: initialBills,
   addBill: () => {},
   updateBill: () => {},
   deleteBill: () => {},
@@ -146,7 +304,7 @@ const BillContext = createContext<BillContextProps>({
 
 // Context provider component
 export const BillProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [bills, setBills] = useState<Bill[]>([]);
+  const [bills, setBills] = useState<Bill[]>(initialBills);
 
   const addBill = (bill: Bill) => {
     setBills((prevBills) => [...prevBills, bill]);
@@ -257,5 +415,4 @@ export const BillProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
-// Custom hook to use the bill context
 export const useBillContext = () => useContext(BillContext);
