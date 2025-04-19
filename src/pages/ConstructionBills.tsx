@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useBillContext, BillType, BillStatus, ConstructionContractBill, Bill } from '@/context/BillContext';
 import StatusBadge from '@/components/ui/StatusBadge';
@@ -14,26 +13,32 @@ const ConstructionBills = () => {
   const [selectedStatus, setSelectedStatus] = useState<BillStatus | 'all'>('all');
   const [selectedLocation, setSelectedLocation] = useState<string>('all');
 
+  // Type guard function to check if a bill is a construction contract bill
+  const isConstructionBill = (bill: Bill): bill is ConstructionContractBill => 
+    bill.type === BillType.CONSTRUCTION_CONTRACT;
+
   // Filter for construction bills only and type guard them
-  const constructionBills = bills.filter((bill): bill is ConstructionContractBill => 
-    bill.type === BillType.CONSTRUCTION_CONTRACT &&
-    (selectedStatus === 'all' || bill.status === selectedStatus) &&
-    (selectedLocation === 'all' || bill.siteLocation === selectedLocation)
-  );
+  const constructionBills = bills.filter((bill): bill is ConstructionContractBill => {
+    if (!isConstructionBill(bill)) return false;
+    
+    return (selectedStatus === 'all' || bill.status === selectedStatus) &&
+      (selectedLocation === 'all' || bill.siteLocation === selectedLocation);
+  });
 
   // Get unique locations from construction bills
   const locations = Array.from(new Set(
     bills
-      .filter((bill): bill is ConstructionContractBill => bill.type === BillType.CONSTRUCTION_CONTRACT)
+      .filter(isConstructionBill)
       .map(bill => bill.siteLocation)
   ));
 
   // Calculate construction statistics
   const getConstructionStats = () => {
-    const filteredBills = bills.filter((bill): bill is ConstructionContractBill => 
-      bill.type === BillType.CONSTRUCTION_CONTRACT &&
-      (selectedLocation === 'all' || bill.siteLocation === selectedLocation)
-    );
+    const filteredBills = bills.filter((bill): bill is ConstructionContractBill => {
+      if (!isConstructionBill(bill)) return false;
+      
+      return (selectedLocation === 'all' || bill.siteLocation === selectedLocation);
+    });
     
     return {
       total: filteredBills.length,
