@@ -1,12 +1,15 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useBillContext, BillType, BillStatus, AdvanceRequestBill } from '@/context/BillContext';
+import { useBillContext, BillType, BillStatus, Bill, AdvanceRequestBill } from '@/context/BillContext';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Filter, Plus } from 'lucide-react';
 import StatusBadge from '@/components/ui/StatusBadge';
 import ApprovalStages from '@/components/ui/ApprovalStages';
+
+const isAdvanceRequestBill = (bill: Bill): bill is AdvanceRequestBill => {
+  return bill.type === BillType.ADVANCE_REQUEST;
+};
 
 const AdvanceBills: React.FC = () => {
   const { bills } = useBillContext();
@@ -15,8 +18,8 @@ const AdvanceBills: React.FC = () => {
 
   // Filter for advance request bills
   const advanceBills = bills
-    .filter((bill): bill is AdvanceRequestBill => 
-      bill.type === BillType.ADVANCE_REQUEST &&
+    .filter(isAdvanceRequestBill)
+    .filter(bill => 
       (statusFilter === 'all' || bill.status === statusFilter) &&
       (vendorFilter === 'all' || bill.vendorName === vendorFilter)
     );
@@ -24,7 +27,7 @@ const AdvanceBills: React.FC = () => {
   // Get unique vendors
   const vendors = Array.from(new Set(
     bills
-      .filter((bill): bill is AdvanceRequestBill => bill.type === BillType.ADVANCE_REQUEST)
+      .filter(isAdvanceRequestBill)
       .map(bill => bill.vendorName)
   ));
 

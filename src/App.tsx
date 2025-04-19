@@ -18,6 +18,7 @@ import AdvanceRequestForm from "@/pages/billForms/AdvanceRequestForm";
 import NotFound from "./pages/NotFound";
 import PurchaseBills from "@/pages/PurchaseBills";
 import AdvanceBills from "@/pages/AdvanceBills";
+import PaymentHistory from "@/pages/PaymentHistory";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            
             <Route 
               path="/" 
               element={
@@ -125,6 +127,16 @@ const App = () => (
                 </AppLayout>
               } 
             />
+            
+            <Route 
+              path="/payments" 
+              element={
+                <AppLayout>
+                  <PaymentHistory />
+                </AppLayout>
+              } 
+            />
+            
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
