@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
 import Dashboard from "@/pages/Dashboard";
+import Bills from "@/pages/Bills";
 import DepartmentOverheadForm from "@/pages/billForms/DepartmentOverheadForm";
 import NotFound from "./pages/NotFound";
 

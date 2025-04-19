@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useBillContext, BillType, BillStatus } from '@/context/BillContext';
 import StatusBadge from '@/components/ui/StatusBadge';
-import { ApprovalStages } from '@/components/ui/ApprovalStages';
+import ApprovalStages from '@/components/ui/ApprovalStages';
 import { 
   Table,
   TableBody,
@@ -66,6 +66,21 @@ const Bills = () => {
     }
   };
 
+  const getVendorName = (bill: any) => {
+    switch (bill.type) {
+      case BillType.DEPARTMENT_OVERHEAD:
+        return bill.vendorName;
+      case BillType.CONSTRUCTION_CONTRACT:
+        return bill.contractorName;
+      case BillType.PURCHASE:
+        return bill.vendorName;
+      case BillType.ADVANCE_REQUEST:
+        return bill.vendorName;
+      default:
+        return '-';
+    }
+  };
+
   return (
     <div className="container py-8 animate-fade-in">
       <div className="mb-8">
@@ -125,7 +140,7 @@ const Bills = () => {
                 <TableCell>
                   {bill.createdAt.toLocaleDateString()}
                 </TableCell>
-                <TableCell>{bill.vendorName}</TableCell>
+                <TableCell>{getVendorName(bill)}</TableCell>
                 <TableCell>
                   ${getAmount(bill).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </TableCell>
