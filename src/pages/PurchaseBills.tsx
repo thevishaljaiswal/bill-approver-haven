@@ -100,7 +100,11 @@ const PurchaseBills: React.FC = () => {
                     <StatusBadge status={bill.status} />
                   </TableCell>
                   <TableCell>
-                    <ApprovalStages currentStage={bill.currentStage} />
+                    <ApprovalStages 
+                      currentStage={bill.currentStage} 
+                      approvals={bill.approvals}
+                      className="w-full" 
+                    />
                   </TableCell>
                 </TableRow>
               );
