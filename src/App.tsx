@@ -10,6 +10,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
 import Dashboard from "@/pages/Dashboard";
 import Bills from "@/pages/Bills";
+import DepartmentBills from "@/pages/DepartmentBills";
 import DepartmentOverheadForm from "@/pages/billForms/DepartmentOverheadForm";
 import NotFound from "./pages/NotFound";
 
@@ -55,6 +56,14 @@ const App = () => (
               } 
             />
             <Route 
+              path="/bills/department" 
+              element={
+                <AppLayout>
+                  <DepartmentBills />
+                </AppLayout>
+              } 
+            />
+            <Route 
               path="/bills/department/new" 
               element={
                 <AppLayout>
@@ -62,7 +71,6 @@ const App = () => (
                 </AppLayout>
               } 
             />
-            {/* Add other routes for bill forms and views here */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
