@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useBillContext, BillType, BillStatus } from '@/context/BillContext';
 import StatusBadge from '@/components/ui/StatusBadge';
 import ApprovalStages from '@/components/ui/ApprovalStages';
@@ -11,7 +12,8 @@ import {
   TableHeader,
   TableRow 
 } from '@/components/ui/table';
-import { Building, HardHat, ShoppingCart, DollarSign } from 'lucide-react';
+import { Building, HardHat, ShoppingCart, DollarSign, Eye } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Bills = () => {
   const { bills } = useBillContext();
@@ -125,6 +127,7 @@ const Bills = () => {
               <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Approval Progress</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -152,6 +155,18 @@ const Bills = () => {
                     currentStage={bill.currentStage}
                     approvals={bill.approvals}
                   />
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                  >
+                    <Link to={`/bills/${bill.id}`}>
+                      <Eye className="mr-2 h-4 w-4" />
+                      View
+                    </Link>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

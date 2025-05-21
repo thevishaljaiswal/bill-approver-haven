@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
 import Dashboard from "@/pages/Dashboard";
 import Bills from "@/pages/Bills";
+import BillDetail from "@/pages/BillDetail";
 import DepartmentBills from "@/pages/DepartmentBills";
 import ConstructionBills from "@/pages/ConstructionBills";
 import DepartmentOverheadForm from "@/pages/billForms/DepartmentOverheadForm";
@@ -59,6 +61,14 @@ const App = () => (
               element={
                 <AppLayout>
                   <Bills />
+                </AppLayout>
+              } 
+            />
+            <Route 
+              path="/bills/:billId" 
+              element={
+                <AppLayout>
+                  <BillDetail />
                 </AppLayout>
               } 
             />
