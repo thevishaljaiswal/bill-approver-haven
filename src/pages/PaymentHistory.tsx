@@ -8,6 +8,7 @@ import StatusBadge from '@/components/ui/StatusBadge';
 import PaymentDetails from '@/components/payments/PaymentDetails';
 import BillDetailsCard from '@/components/payments/BillDetailsCard';
 import BankDetailsCard from '@/components/payments/BankDetailsCard';
+import VendorCard from '@/components/payments/VendorCard';
 
 const PaymentHistory = () => {
   const { bills } = useBillContext();
@@ -120,10 +121,11 @@ const PaymentHistory = () => {
 
       {/* Display cards for the first bill in filtered results as example */}
       {filteredBills.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <PaymentDetails bill={filteredBills[0]} />
+        <div className="flex flex-col gap-6 mb-6">
+          <VendorCard bill={filteredBills[0]} />
           <BillDetailsCard bill={filteredBills[0]} />
           <BankDetailsCard bill={filteredBills[0]} />
+          <PaymentDetails bill={filteredBills[0]} />
         </div>
       )}
 
