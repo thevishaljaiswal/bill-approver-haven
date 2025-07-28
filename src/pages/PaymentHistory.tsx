@@ -6,9 +6,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { DollarSign, Filter } from 'lucide-react';
 import StatusBadge from '@/components/ui/StatusBadge';
 import PaymentDetails from '@/components/payments/PaymentDetails';
-import BillDetailsCard from '@/components/payments/BillDetailsCard';
-import BankDetailsCard from '@/components/payments/BankDetailsCard';
-import VendorCard from '@/components/payments/VendorCard';
 
 const PaymentHistory = () => {
   const { bills } = useBillContext();
@@ -119,16 +116,6 @@ const PaymentHistory = () => {
         </select>
       </div>
 
-      {/* Display cards for the first bill in filtered results as example */}
-      {filteredBills.length > 0 && (
-        <div className="flex flex-col gap-6 mb-6">
-          <VendorCard bill={filteredBills[0]} />
-          <BillDetailsCard bill={filteredBills[0]} />
-          <BankDetailsCard bill={filteredBills[0]} />
-          <PaymentDetails bill={filteredBills[0]} />
-        </div>
-      )}
-
       <Card>
         <Table>
           <TableHeader>
@@ -156,15 +143,7 @@ const PaymentHistory = () => {
                   <StatusBadge status={bill.status} />
                 </TableCell>
                 <TableCell>
-                  <button 
-                    className="text-primary hover:underline"
-                    onClick={() => {
-                      // This could open a modal or navigate to detail page
-                      console.log('View details for bill:', bill.id);
-                    }}
-                  >
-                    View Details
-                  </button>
+                  <PaymentDetails bill={bill} />
                 </TableCell>
               </TableRow>
             ))}
