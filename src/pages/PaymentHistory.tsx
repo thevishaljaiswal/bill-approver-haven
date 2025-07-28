@@ -6,6 +6,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { DollarSign, Filter } from 'lucide-react';
 import StatusBadge from '@/components/ui/StatusBadge';
 import PaymentDetails from '@/components/payments/PaymentDetails';
+import VendorCard from '@/components/payments/VendorCard';
+import BillDetailsCard from '@/components/payments/BillDetailsCard';
+import BankDetailsCard from '@/components/payments/BankDetailsCard';
 
 const PaymentHistory = () => {
   const { bills } = useBillContext();
@@ -116,40 +119,33 @@ const PaymentHistory = () => {
         </select>
       </div>
 
-      <Card>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Bill Type</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Reference</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredBills.map((bill) => (
-              <TableRow key={bill.id}>
-                <TableCell>{bill.type}</TableCell>
-                <TableCell>
-                  {bill.createdAt.toLocaleDateString()}
-                </TableCell>
-                <TableCell>{getBillReference(bill)}</TableCell>
-                <TableCell>
-                  ${getBillAmount(bill).toLocaleString()}
-                </TableCell>
-                <TableCell>
+      <div className="space-y-6">
+        {filteredBills.map((bill) => (
+          <Card key={bill.id} className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+              <VendorCard bill={bill} />
+              <BillDetailsCard bill={bill} />
+              <BankDetailsCard bill={bill} />
+              <PaymentDetails bill={bill} />
+            </div>
+            <div className="flex items-center justify-between pt-4 border-t">
+              <div className="flex items-center gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Amount</p>
+                  <p className="text-lg font-semibold">${getBillAmount(bill).toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Status</p>
                   <StatusBadge status={bill.status} />
-                </TableCell>
-                <TableCell>
-                  <PaymentDetails bill={bill} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+                </div>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Ref: {getBillReference(bill)}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
